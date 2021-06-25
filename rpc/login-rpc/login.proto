@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package="./proto";
+
+package login;
+
+message Request {
+  string username = 1;
+  string password = 2;
+}
+
+message Response {
+  int64 code = 1;
+  string msg = 2;
+  UserToken data = 3; 
+}
+message UserToken {
+  string token = 1;
+  int32 expires_in = 2;
+}
+
+service Login {
+  rpc Submit(Request) returns(Response);
+}

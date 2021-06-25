@@ -1,0 +1,61 @@
+syntax = "v1"
+
+info(
+	title: "user login api"
+	desc: "use username and password to login"
+	author: "huangchangxi"
+	email: "hcx_java@126.com"
+)
+
+type HttpResponse {
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
+}
+
+type (
+	IndexResp {
+		HttpResponse
+	}
+
+	AuthReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	AuthResp {
+		Ticket    string `json:"ticket"`
+		ExpiresIn int32  `json:"expires_in"`
+	}
+
+	VerifyCodeResp {
+		Data string `json:"data"`
+	}
+)
+
+service login-api {
+	
+	@doc(
+		summary:
+		desc: >
+		index: 测试用,
+		auth: 登录授权,
+		verify_code: 图片验证码
+		
+	)
+	
+	@server(
+		handler: IndexHandler
+	)
+	get /login/index returns(HttpResponse)
+	
+	@server(
+		handler: AuthHandler
+	)
+	post /login/auth(AuthReq) returns(HttpResponse)
+	
+	@server(
+		handler: VerifyCodeHandler
+	)
+	post /login/verify-code returns(HttpResponse)
+}
